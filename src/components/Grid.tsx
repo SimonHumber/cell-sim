@@ -24,22 +24,22 @@ const Grid = () => {
   const renderGrid = () => {
     return cells.map((row, i) => (
       <div key={i} style={{ display: "flex" }}>
-        {row.map((isFilled) => (
-          <Cell isFilled={isFilled} />
+        {row.map((isFilled, j) => (
+          <Cell isFilled={isFilled} onClick={() => toggleCell(i, j)} />
         ))}
       </div>
     ));
   };
+  const toggleCell = (col: number, row: number) => {
+    var newCells = [...cells];
+    newCells[col][row] = !newCells[col][row];
+    setCells([...newCells]);
+  };
 
   const onStartClick = () => {
-    setStartSim(true);
     growCells();
   };
-  const onStopClick = () => {
-    setStartSim(false);
-  };
   const onResetClick = () => {
-    setStartSim(false);
     setCells(initCells());
   };
   const growCells = async (
@@ -82,7 +82,6 @@ const Grid = () => {
       <h2>Grid</h2>
       <div>{renderGrid()}</div>
       <button onClick={onStartClick}>Grow</button>
-      <button onClick={onStopClick}>Stop</button>
       <button onClick={onResetClick}>Reset</button>
       <input
         type="number"
