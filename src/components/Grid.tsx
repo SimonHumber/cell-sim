@@ -6,6 +6,7 @@ const Grid = () => {
   const [colHeight, setColHeight] = useState(20);
   const [cells, setCells] = useState<boolean[][]>([]);
   const [startSim, setStartSim] = useState(false);
+  const [timer, setTimer] = useState(500);
 
   const initCells = () => {
     var initialCells: boolean[][] = [];
@@ -50,28 +51,28 @@ const Grid = () => {
     if (row > 0 && !newCells[col][row - 1]) {
       newCells[col][row - 1] = true; // left
       setCells([...newCells]);
-      await new Promise<void>((resolve) => setTimeout(resolve, 500));
+      await new Promise<void>((resolve) => setTimeout(resolve, timer));
       growCells(col, row - 1); // recursive call to keep growing left
     }
 
     if (row < colHeight - 1 && !newCells[col][row + 1]) {
       newCells[col][row + 1] = true; // right
       setCells([...newCells]);
-      await new Promise<void>((resolve) => setTimeout(resolve, 500));
+      await new Promise<void>((resolve) => setTimeout(resolve, timer));
       growCells(col, row + 1); // recursive call to keep growing right
     }
 
     if (col > 0 && !newCells[col - 1][row]) {
       newCells[col - 1][row] = true; // up
       setCells([...newCells]);
-      await new Promise<void>((resolve) => setTimeout(resolve, 500));
+      await new Promise<void>((resolve) => setTimeout(resolve, timer));
       growCells(col - 1, row); // recursive call to keep growing up
     }
 
     if (col < rowWidth - 1 && !newCells[col + 1][row]) {
       newCells[col + 1][row] = true; // down
       setCells([...newCells]);
-      await new Promise<void>((resolve) => setTimeout(resolve, 500));
+      await new Promise<void>((resolve) => setTimeout(resolve, timer));
       growCells(col + 1, row); // recursive call to keep growing down
     }
   };
@@ -83,6 +84,11 @@ const Grid = () => {
       <button onClick={onStartClick}>Grow</button>
       <button onClick={onStopClick}>Stop</button>
       <button onClick={onResetClick}>Reset</button>
+      <input
+        type="number"
+        onChange={(event) => setTimer(parseInt(event.target.value))}
+        value={timer}
+      />
     </div>
   );
 };
