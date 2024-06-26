@@ -1,18 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Vertex from "./Vertex";
+import "./styles.css";
 
 interface CellProps {
-  isFilled: boolean;
-  onClick: () => void;
+  leftNeighbour?: Vertex;
+  rightNeighbour?: Vertex;
+  upNeighbour?: Vertex;
+  downNeighbour?: Vertex;
+  vertex: Vertex;
+  isRunning: boolean;
+  timer: number;
+  rerender: () => void;
 }
-const Cell = ({ isFilled, onClick }: CellProps) => {
+
+const Cell = ({
+  vertex,
+  isRunning,
+  leftNeighbour,
+  rightNeighbour,
+  upNeighbour,
+  downNeighbour,
+  timer,
+  rerender,
+}: CellProps) => {
+  const [showCell, setShowCell] = useState(vertex.isGrown);
+
+  useEffect(() => {
+    let run: NodeJS.Timeout | null = null;
+
+    const growCell = () => {
+      if (leftNeighbour && !leftNeighbour.isGrown) {
+        leftNeighbour.isGrown = true;
+        rerender();
+      } else if (rightNeighbour && !rightNeighbour.isGrown) {
+        rightNeighbour.isGrown = true;
+        rerender();
+      } else if (upNeighbour && !upNeighbour.isGrown) {
+        upNeighbour.isGrown = true;
+        rerender();
+      } else if (downNeighbour && !downNeighbour.isGrown) {
+        downNeighbour.isGrown = true;
+        rerender();
+      } else {
+        clearInterval(run!); // Clear interval when animation completes
+      }
+    };
+
+    if (isRunning && showCell) {
+      run = setInterval(growCell, timer);
+    }
+
+    return () => {
+      clearInterval(run!); // Clear interval on component unmount or isRunning change
+      // ! means that run will never be null
+    };
+  }, [isRunning, showCell]);
+
+  // when a neighbour modifies our vertex object, we trigger re-render and grow
+  useEffect(() => {
+    setShowCell(vertex.isGrown);
+  }, [vertex.isGrown]);
+
+  const handleClick = () => {
+    setShowCell(!showCell);
+  };
+
   return (
-    <div onClick={onClick}>
-      {isFilled ? (
-        <div style={{ fontSize: 30, marginLeft: "3px" }}>o</div>
-      ) : (
-        <div style={{ fontSize: 30, marginLeft: "3px" }}>_</div>
-      )}
-    </div>
+    <div
+      onClick={handleClick}
+      className={`cell ${showCell ? "grown" : "empty"}`}
+    ></div>
   );
 };
 

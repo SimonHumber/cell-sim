@@ -1,0 +1,14 @@
+.cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.cell.grown {
+  background-color: #00f;
+}
+
+.cell.empty {
+  background-color: #fff;
+}
