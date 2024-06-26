@@ -22,8 +22,9 @@ No external libraries were used, so it's just the React library.
 This app starts from the Grid component. Grid will create the Cell component and pass the Vertex object.
 
 How I made each Cell component be able to reference its neighbours was by creating a Vertex object. 
-Vertex object will have properties that can be toggled, and each Cell component will have the fields 
-as useEffect dependencies to trigger re-render.
+Vertex object will have properties that can be toggled, and each Cell component will have the Vertex fields 
+as useEffect dependencies to trigger re-render. So when a Cell toggles the isGrown field of a neighbouring cell,
+it will trigger useEffect hook and re-render the Grid
 
 Each Cell component will have its own timer and setInterval function. Cells don't completely sync up their divisions, but it's pretty close!
 At very large grid sizes, it will begin to slow down.
