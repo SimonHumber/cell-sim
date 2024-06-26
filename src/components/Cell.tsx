@@ -54,7 +54,14 @@ const Cell = ({
       clearInterval(run!); // Clear interval on component unmount or isRunning change
       // ! means that run will never be null
     };
-  }, [isRunning, showCell]);
+  }, [
+    isRunning,
+    showCell,
+    leftNeighbour?.isGrown,
+    rightNeighbour?.isGrown,
+    upNeighbour?.isGrown,
+    downNeighbour?.isGrown,
+  ]);
 
   // when a neighbour modifies our vertex object, we trigger re-render and grow
   useEffect(() => {
@@ -62,7 +69,8 @@ const Cell = ({
   }, [vertex.isGrown]);
 
   const handleClick = () => {
-    setShowCell(!showCell);
+    vertex.isGrown = !vertex.isGrown;
+    rerender();
   };
 
   return (
