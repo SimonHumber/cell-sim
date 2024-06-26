@@ -1,10 +1,20 @@
-# Getting Started with Create React App
+# Cell Simulator Take Home Assignment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a simple React webapp meant to simulate growth patterns of bacterial colonies.
+
+Basically, you've got cells in a grid, and the cells with divide in a given time interval.
+
+You can click on a grid to toggle the cell, adjust size of the grid, adjust time of interval, start, stop, pause,.
+
+This app has been deployed on Vercel and you can check it out here: https://cell-sim.vercel.app/
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+
+Install dependencies. No external libraries were used, so it's just the React library.
 
 ### `npm start`
 
