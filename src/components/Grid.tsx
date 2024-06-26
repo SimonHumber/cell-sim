@@ -11,6 +11,7 @@ const Grid = () => {
   const [timer, setTimer] = useState(500);
   const [gridKey, setGridKey] = useState(0); // State to force re-rendering
 
+  // this will run on mount or on grid size change
   const createGrid = () => {
     var initialCells: Vertex[][] = [];
     for (let i = 0; i < colHeight; i++) {
@@ -25,6 +26,7 @@ const Grid = () => {
     return initialCells;
   };
 
+  //useEffect for when grid is changed, will reset grid
   useEffect(() => {
     if (colHeight && rowWidth) {
       setCells(createGrid());
@@ -32,6 +34,33 @@ const Grid = () => {
     //re-render when first mount, and when row and col are changed
   }, [rowWidth, colHeight]);
 
+  // useEffects for keyboard controls
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter" || event.key === " ") {
+        isRunning ? onStopClick() : onStartClick();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isRunning]);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Backspace" || event.key === "Escape") {
+        onResetClick();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  //function to create grid and cells
   const renderGrid = () => {
     return cells.map((row, i) => {
       return (
@@ -80,14 +109,16 @@ const Grid = () => {
   };
 
   return (
-    <div className="grid-container">
+    <div>
       <h2>Cell Simulator</h2>
+      {/* if running, show stop button, else show start button */}
       {isRunning ? (
         <button onClick={onStopClick}>Stop</button>
       ) : (
         <button onClick={onStartClick}>Grow</button>
       )}
       <button onClick={onResetClick}>Reset</button>
+      {/* show message if sim is running */}
       {isRunning ? (
         <div>Sim running</div>
       ) : (
@@ -118,6 +149,7 @@ const Grid = () => {
         value={rowWidth}
       />
       <div className="grid">
+        {/* if grid size is invalid, show run error message */}
         {rowWidth && colHeight && rowWidth > 1 && colHeight > 1 ? (
           renderGrid()
         ) : (
