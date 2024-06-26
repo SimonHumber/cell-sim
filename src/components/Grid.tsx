@@ -82,8 +82,11 @@ const Grid = () => {
   return (
     <div className="grid-container">
       <h2>Cell Simulator</h2>
-      <button onClick={onStartClick}>Grow</button>
-      <button onClick={onStopClick}>Stop</button>
+      {isRunning ? (
+        <button onClick={onStopClick}>Stop</button>
+      ) : (
+        <button onClick={onStartClick}>Grow</button>
+      )}
       <button onClick={onResetClick}>Reset</button>
       {isRunning ? (
         <div>Sim running</div>
