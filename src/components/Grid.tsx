@@ -85,6 +85,13 @@ const Grid = () => {
       <button onClick={onStartClick}>Grow</button>
       <button onClick={onStopClick}>Stop</button>
       <button onClick={onResetClick}>Reset</button>
+      {isRunning ? (
+        <div>Sim running</div>
+      ) : (
+        <div>
+          <br />
+        </div>
+      )}
       <br />
       <label>Delay in ms</label>
       <input
